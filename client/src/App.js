@@ -62,50 +62,95 @@ function App() {
 
   return (
     <div className="container">
-      <h2>Contact Management</h2>
+      <div className="header">
+        <span role="img" aria-label="contacts">📇</span> Contact Manager
+      </div>
 
       <form onSubmit={handleSubmit} className="contact-form">
-        <input
-          placeholder="Name *"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          required
-        />
-        <input
-          placeholder="Email *"
-          type="email"
-          value={formData.email}
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-          required
-        />
-        <input
-          placeholder="Phone *"
-          value={formData.phone}
-          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-          required
-        />
-        <textarea
-          placeholder="Message"
-          value={formData.message}
-          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-        />
+        <div className="form-group">
+          <input
+            type="text"
+            id="name"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            placeholder=" "
+            required
+            autoComplete="off"
+          />
+          <label htmlFor="name" className="form-label">Name *</label>
+        </div>
+        <div className="form-group">
+          <input
+            type="email"
+            id="email"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            placeholder=" "
+            required
+            autoComplete="off"
+          />
+          <label htmlFor="email" className="form-label">Email *</label>
+        </div>
+        <div className="form-group">
+          <input
+            type="tel"
+            id="phone"
+            value={formData.phone}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            placeholder=" "
+            required
+            autoComplete="off"
+          />
+          <label htmlFor="phone" className="form-label">Phone *</label>
+        </div>
+        <div className="form-group">
+          <textarea
+            id="message"
+            value={formData.message}
+            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+            placeholder=" "
+            rows="3"
+          />
+          <label htmlFor="message" className="form-label">Message</label>
+        </div>
         <button type="submit" disabled={!validate() || loading}>
           {loading ? "Submitting..." : "Add Contact"}
         </button>
       </form>
 
-      <hr />
+      <div className="section-divider"></div>
 
-      <h3>Saved Contacts</h3>
+      <div className="section-header">
+        <span className="section-icon">👥</span>
+        <h3>Saved Contacts</h3>
+        {contacts.length > 0 && <span className="contact-count">{contacts.length}</span>}
+      </div>
       <div className="contact-list">
-        {contacts.length === 0 && !loading && <p>No contacts found.</p>}
-        {contacts.map((c) => (
-          <div key={c._id} className="contact-card">
-            <p><strong>{c.name}</strong> - {c.email}</p>
-            <p>{c.phone} | <small>{c.message}</small></p>
-            <button onClick={() => handleDelete(c._id)} className="delete-btn">
-              Delete
-            </button>
+        {contacts.length === 0 && !loading && (
+          <div className="empty-state">
+            <div className="empty-icon">📭</div>
+            <p className="empty-text">No contacts yet</p>
+            <p className="empty-subtext">Add your first contact above to get started!</p>
+          </div>
+        )}
+        {contacts.map((c, index) => (
+          <div key={c._id} className="contact-card" style={{ animationDelay: `${index * 0.1}s` }}>
+            <div className="contact-avatar">
+              {c.name.charAt(0).toUpperCase()}
+            </div>
+            <div className="contact-info">
+              <div className="contact-name-row">
+                <h4 className="contact-name">{c.name}</h4>
+                <button onClick={() => handleDelete(c._id)} className="delete-btn" title="Delete contact">
+                  🗑️
+                </button>
+              </div>
+              <div className="contact-details">
+                <p className="contact-email">📧 {c.email}</p>
+                <p className="contact-phone">📞 {c.phone}</p>
+                {c.message && <p className="contact-message">💬 {c.message}</p>}
+              </div>
+            </div>
           </div>
         ))}
       </div>
