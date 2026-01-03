@@ -30,10 +30,18 @@ const contactSchema = new mongoose.Schema({
 
 const Contact = mongoose.model('Contact', contactSchema);
 
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', message: 'Server is running' });
+});
+
 // API Routes
 app.post('/api/contacts', async (req, res) => {
+  console.log("📥 POST /api/contacts - Request received");
+  console.log("📥 Headers:", req.headers);
+  console.log("📥 Body:", req.body);
   try {
-    console.log("Received contact data:", req.body);
+    console.log("✅ Processing contact data:", req.body);
     const newContact = new Contact(req.body);
     await newContact.save();
     console.log("Contact saved successfully:", newContact);
