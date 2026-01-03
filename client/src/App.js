@@ -5,6 +5,10 @@ import "./App.css";
 // API URL - uses environment variable in production, localhost in development
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api/contacts";
 
+// Debug: Log the API URL being used
+console.log("🌐 API URL:", API_URL);
+console.log("🔧 REACT_APP_API_URL env var:", process.env.REACT_APP_API_URL);
+
 function App() {
   const [contacts, setContacts] = useState([]);
   const [formData, setFormData] = useState({
@@ -38,6 +42,8 @@ function App() {
     e.preventDefault();
     setLoading(true);
     try {
+      console.log("📤 Sending contact data to:", API_URL);
+      console.log("📦 Data being sent:", formData);
       // Sending data to Render
       await axios.post(API_URL, formData);
       setFormData({ name: "", email: "", phone: "", message: "" });
@@ -45,8 +51,14 @@ function App() {
       alert("Contact Saved Successfully!");
     } catch (err) {
       // Detailed error logging to browser console
-      console.error("Submit Error:", err.response || err.message);
-      alert(`Error saving contact: ${err.response?.data?.message || "Check server logs"}`);
+      console.error("Submit Error:", err);
+      console.error("Error Response:", err.response);
+      const errorMessage = err.response?.data?.error || 
+                          err.response?.data?.message || 
+                          err.response?.data?.details ||
+                          err.message || 
+                          "Check server logs";
+      alert(`Error saving contact: ${errorMessage}`);
     }
     setLoading(false);
   };
