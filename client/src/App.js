@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
 
-// Updated to your Render URL
-const API_URL = "https://small-contac-t-app.onrender.com/api/contacts";
+// API URL - uses environment variable in production, localhost in development
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api/contacts";
 
 function App() {
   const [contacts, setContacts] = useState([]);
