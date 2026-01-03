@@ -9,9 +9,12 @@ const app = express();
 app.use(cors()); 
 app.use(express.json());
 
-// 2. FIX MONGO_URI: Fixed the typo 'ongodb' to 'mongodb' and ensured environment variables take priority
-// const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://saurabhmelgirkar636_db_user:<db_password>@cluster0.brfmncr.mongodb.net/contactManager?retryWrites=true&w=majority&appName=Cluster0";
-const MONGO_URI = "mongodb+srv://saurabhmelgirkar636_db_user:KrxB8sm3DbJLulcn@cluster0.brfmncr.mongodb.net/contactManager?retryWrites=true&w=majority&appName=Cluster0";
+// MongoDB connection - MUST be set via environment variable for security
+const MONGO_URI = process.env.MONGO_URI;
+if (!MONGO_URI) {
+  console.error("❌ MONGO_URI environment variable is not set!");
+  process.exit(1);
+}
 mongoose.connect(MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected Successfully"))
   .catch(err => console.error("❌ MongoDB Connection Error:", err));
