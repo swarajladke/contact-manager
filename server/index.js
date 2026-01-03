@@ -33,12 +33,23 @@ const Contact = mongoose.model('Contact', contactSchema);
 // API Routes
 app.post('/api/contacts', async (req, res) => {
   try {
+    console.log("Received contact data:", req.body);
     const newContact = new Contact(req.body);
     await newContact.save();
+    console.log("Contact saved successfully:", newContact);
     res.status(201).json(newContact);
   } catch (err) { 
-    console.error("Post Error:", err);
-    res.status(400).json({ message: "Error saving contact", error: err }); 
+    console.error("Post Error Details:", {
+      message: err.message,
+      name: err.name,
+      errors: err.errors,
+      stack: err.stack
+    });
+    res.status(400).json({ 
+      message: "Error saving contact", 
+      error: err.message,
+      details: err.errors || err.message
+    }); 
   }
 });
 
