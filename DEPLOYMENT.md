@@ -48,7 +48,7 @@
    - **Name**: `contact-manager-frontend`
    - **Root Directory**: `client`
    - **Build Command**: `npm install && npm run build`
-   - **Publish Directory**: `build`
+   - **Publish Directory**: `build` (exactly `build`, not `./build` or `build/`)
 
 3. **Add Environment Variable**
    - Click "Environment" → "Add Environment Variable"
@@ -126,6 +126,37 @@ The backend already has CORS enabled, so it should work with any frontend URL.
 ---
 
 ## Troubleshooting
+
+### Frontend Shows "Not Found" Error
+
+**Common causes and fixes:**
+
+1. **Check Publish Directory**
+   - In Render dashboard → Your Static Site → Settings
+   - **Publish Directory** must be exactly: `build` (not `./build` or `build/`)
+   - Save and redeploy
+
+2. **Verify Build Succeeded**
+   - Go to your Static Site → Logs
+   - Check if build completed successfully
+   - Look for errors in the build process
+
+3. **Check Root Directory**
+   - **Root Directory** should be: `client`
+   - Not empty, not `./client`, just `client`
+
+4. **Verify Build Command**
+   - Should be: `npm install && npm run build`
+   - Make sure it's running in the `client` directory
+
+5. **Check for _redirects file**
+   - The `_redirects` file in `client/public/` should be included
+   - This file helps with routing (already added to the repo)
+
+6. **Redeploy**
+   - After fixing settings, click "Manual Deploy" → "Clear build cache & deploy"
+
+### Other Issues
 
 1. **Backend not connecting to MongoDB**
    - Check your `MONGO_URI` environment variable

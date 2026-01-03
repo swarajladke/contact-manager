@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: contact-manager-api
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGO_URI
+        sync: false
+    rootDir: server
+
+  - type: web
+    name: contact-manager-frontend
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./build
+    envVars:
+      - key: REACT_APP_API_URL
+        sync: false
+    rootDir: client
+
