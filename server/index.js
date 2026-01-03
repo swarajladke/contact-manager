@@ -13,6 +13,7 @@ app.use(express.json());
 const MONGO_URI = process.env.MONGO_URI;
 if (!MONGO_URI) {
   console.error("❌ MONGO_URI environment variable is not set!");
+  console.error("Available env vars:", Object.keys(process.env).filter(k => k.includes('MONGO')));
   process.exit(1);
 }
 mongoose.connect(MONGO_URI)
